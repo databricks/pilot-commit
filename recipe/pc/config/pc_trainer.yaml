@@ -1,0 +1,36 @@
+hydra:
+  searchpath:
+    - file://verl/trainer/config
+
+defaults:
+  - ppo_trainer
+  - _self_
+
+data:
+  gen_batch_size: ${data.train_batch_size}
+
+reward_model:
+  reward_manager: dapo
+  overlong_buffer: 
+    enable: False # We try to avoid forgetting to set enable
+    len: 0
+    penalty_factor: 0.0
+    log: False
+
+algorithm:
+  agg_metric: acc
+  max_num_gen_batches: 10 # Non-positive values mean no upper limit
+  buffer_size: 100000
+  buffer_max_off_steps: 4
+  buffer_sampling_method: random
+  buffer_response_sampling_method: max_variance
+  diversity_threshold_upper: 0.25
+  diversity_threshold_lower: 0.25
+  exclude_threshold_upper: null  # exclude prompts if more correct
+  exploration:
+    n: 8
+    n_effective: null
+
+
+trainer:
+  project_name: pilot-commit
